@@ -25,7 +25,12 @@ def main() -> None:
         "--clipboard",
         "-c",
         action="store_true",
-        help="Copy output to clipboard",
+        help="Copy output to clipboard (suppresses stdout)",
+    )
+    parser.add_argument(
+        "--tee",
+        action="store_true",
+        help="With --clipboard, also print to stdout",
     )
     parser.add_argument(
         "--version",
@@ -35,7 +40,9 @@ def main() -> None:
     args = parser.parse_args()
 
     output = generate(args.query)
-    sys.stdout.write(output)
+
+    if not args.clipboard or args.tee:
+        sys.stdout.write(output)
 
     if args.clipboard:
         import pyperclip  # type: ignore[import-untyped]
