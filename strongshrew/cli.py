@@ -20,7 +20,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description="Generate cross-platform search links in Obsidian markdown"
     )
-    parser.add_argument("query", help="Search term")
+    parser.add_argument("query", nargs="+", help="Search term (words joined automatically)")
     parser.add_argument(
         "--clipboard",
         "-c",
@@ -39,7 +39,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    output = generate(args.query)
+    output = generate(" ".join(args.query))
 
     if not args.clipboard or args.tee:
         sys.stdout.write(output)
